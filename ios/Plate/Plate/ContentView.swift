@@ -8,17 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var currentScreen = 0
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        switch currentScreen {
+        case 0:
+            SplashView(currentScreen: $currentScreen)
+        case 1:
+            SignUpStep1View(currentScreen: $currentScreen)
+        case 2:
+            SignUpStep2View(currentScreen: $currentScreen)
+        case 3:
+            TonightPickView()
+        default:
+            SplashView(currentScreen: $currentScreen)
         }
-        .padding()
     }
 }
 
-#Preview {
-    ContentView()
-}
