@@ -9,10 +9,7 @@ import SwiftUI
 
 struct SignUpStep1View: View {
     @Binding var currentScreen: Int
-    @State private var name = ""
-    @State private var email = ""
-    @State private var password = ""
-    @State private var age = ""
+    @EnvironmentObject var viewModel: SignUpViewModel
     
     var body: some View {
         ZStack {
@@ -49,10 +46,10 @@ struct SignUpStep1View: View {
                     .padding(.bottom, 36)
                 
                 VStack(spacing: 20) {
-                    PlateTextField(label: "NAME", placeholder: "your name", text: $name)
-                    PlateEmailField(label: "EMAIL", placeholder: "you@email.com", text: $email)
-                    PlateSecureField(label: "PASSWORD", placeholder: "········", text: $password)
-                    PlateTextField(label: "AGE", placeholder: "21", text: $age)
+                    PlateTextField(label: "NAME", placeholder: "your name", text: $viewModel.name)
+                    PlateEmailField(label: "EMAIL", placeholder: "you@email.com", text: $viewModel.email)
+                    PlateSecureField(label: "PASSWORD", placeholder: "········", text: $viewModel.password)
+                    PlateTextField(label: "AGE", placeholder: "21", text: $viewModel.age)
                 }
                 
                 Spacer()

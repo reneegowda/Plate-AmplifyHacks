@@ -1,30 +1,40 @@
 import SwiftUI
 
 struct TonightPickView: View {
+    let recommendation: RecommendResponse
+
+    private var restaurantNameParts: (String, String) {
+        let words = recommendation.restaurantName.components(separatedBy: " ")
+        guard words.count > 1 else { return (recommendation.restaurantName, "") }
+        let first = words.dropLast().joined(separator: " ")
+        let second = words.last!
+        return (first, second)
+    }
+
     var body: some View {
         ZStack {
             Color(hex: "F5F0E8").ignoresSafeArea()
-            
+
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("TONIGHT FOR YOU")
                         .font(.system(size: 11, weight: .semibold))
                         .tracking(2)
                         .foregroundColor(Color(hex: "4A7C59"))
-                    
-                    Text("Collegetown")
+
+                    Text(restaurantNameParts.0)
                         .font(.custom("Georgia", size: 48))
                         .fontWeight(.bold)
                         .foregroundColor(Color(hex: "2C4A35"))
-                    
-                    Text("Bagels")
+
+                    Text(restaurantNameParts.1)
                         .font(.custom("Georgia", size: 48))
                         .fontWeight(.bold)
                         .foregroundColor(Color(hex: "2C4A35"))
                         .frame(maxWidth: .infinity, alignment: .trailing)
                 }
                 .padding(.top, 60)
-                
+
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color(hex: "FAFAF7"))
@@ -32,11 +42,11 @@ struct TonightPickView: View {
                             RoundedRectangle(cornerRadius: 20)
                                 .stroke(Color(hex: "E8E4DA"), lineWidth: 1)
                         )
-                    
+
                     VStack(spacing: 8) {
                         Text("🥯")
                             .font(.system(size: 64))
-                        Text("avocado toast on\neverything bagel")
+                        Text(recommendation.dish)
                             .font(.custom("Georgia", size: 15))
                             .italic()
                             .multilineTextAlignment(.center)
@@ -44,15 +54,19 @@ struct TonightPickView: View {
                     }
                     .padding(.vertical, 56)
                 }
-                
+
                 HStack(spacing: 10) {
-                    TagCard(text: "fresh\n+ filling", color: "D4EDE1", textColor: "2C4A35")
-                    TagCard(text: "campus\nfave", color: "FAE0D4", textColor: "7C3D4A")
+                    if recommendation.keywords.indices.contains(0) {
+                        TagCard(text: recommendation.keywords[0], color: "D4EDE1", textColor: "2C4A35")
+                    }
+                    if recommendation.keywords.indices.contains(1) {
+                        TagCard(text: recommendation.keywords[1], color: "FAE0D4", textColor: "7C3D4A")
+                    }
                 }
-                
+
                 HStack(spacing: 10) {
-                    StatCard(label: "avg price", value: "$9")
-                    StatCard(label: "closes", value: "9 PM")
+                    StatCard(label: "avg price", value: recommendation.price)
+                    StatCard(label: "closes", value: recommendation.closingTime)
                 }
                 
                 Spacer()

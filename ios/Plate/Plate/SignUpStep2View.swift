@@ -9,10 +9,7 @@ import SwiftUI
 
 struct SignUpStep2View: View {
     @Binding var currentScreen: Int
-    @State private var dietary = ""
-    @State private var cuisine = ""
-    @State private var dinnerTime = "7:30 PM"
-    @State private var budget = "$15-25"
+    @EnvironmentObject var viewModel: SignUpViewModel
     
     var body: some View {
         ZStack {
@@ -48,18 +45,21 @@ struct SignUpStep2View: View {
                     .padding(.bottom, 36)
                 
                 VStack(spacing: 20) {
-                    PlateTextField(label: "DIETARY RESTRICTIONS", placeholder: "e.g. vegetarian, no nuts", text: $dietary)
-                    PlateTextField(label: "CUISINE PREFERENCES", placeholder: "e.g. Thai, Italian", text: $cuisine)
-                    
+                    PlateTextField(label: "DIETARY RESTRICTIONS", placeholder: "e.g. vegetarian, no nuts", text: $viewModel.dietaryRestrictions)
+                    PlateTextField(label: "CUISINE PREFERENCES", placeholder: "e.g. Thai, Italian", text: $viewModel.cuisinePreferences)
+
                     HStack(spacing: 14) {
-                        PlateTextField(label: "DINNER TIME", placeholder: "7:30 PM", text: $dinnerTime)
-                        PlateTextField(label: "BUDGET", placeholder: "$15-25", text: $budget)
+                        PlateTextField(label: "DINNER TIME", placeholder: "7:30 PM", text: $viewModel.dinnerTime)
+                        PlateTextField(label: "BUDGET", placeholder: "$15-25", text: $viewModel.budget)
                     }
                 }
                 
                 Spacer()
                 
-                Button(action: { currentScreen = 3 }) {
+                Button(action: {
+                    Task { await viewModel.signup() }
+                    currentScreen = 3
+                }) {
                     Text("let's eat →")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(.white)

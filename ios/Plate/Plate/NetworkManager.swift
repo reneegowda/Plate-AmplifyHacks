@@ -1,7 +1,7 @@
 import Foundation
 
 private let baseURL = "http://localhost:5001"
-private let useMock = false
+private let useMock = true
 
 struct SignupRequest: Codable {
     var name: String
@@ -24,6 +24,8 @@ struct RecommendResponse: Codable {
     var keywords: [String]
     var address: String
     var mapsUrl: String
+    var price: String
+    var closingTime: String
 }
 
 @MainActor
@@ -53,16 +55,22 @@ final class NetworkManager {
         return userId
     }
 
-    func recommend(_ body: RecommendRequest) async throws -> RecommendResponse {
+    func recommend(latitude: Double, longitude: Double) async throws -> RecommendResponse {
         if useMock {
             return RecommendResponse(
                 restaurantName: "The Golden Spoon",
                 dish: "Truffle Mushroom Risotto",
                 keywords: ["cozy", "vegetarian-friendly", "date night"],
                 address: "123 Maple St, San Francisco, CA 94103",
-                mapsUrl: "https://maps.apple.com/?q=The+Golden+Spoon"
+                mapsUrl: "https://maps.apple.com/?q=The+Golden+Spoon",
+                price: "$18",
+                closingTime: "10 PM"
             )
         }
+        guard let userId = UserDefaults.standard.string(forKey: "userId") else {
+            throw URLError(.userAuthenticationRequired)
+        }
+        let body = RecommendRequest(userId: userId, latitude: latitude, longitude: longitude)
         let data = try await post(path: "/recommend", body: body)
         return try decoder.decode(RecommendResponse.self, from: data)
     }
