@@ -35,6 +35,8 @@ final class SignUpViewModel: ObservableObject {
             )
             let userId = try await NetworkManager.shared.signup(request)
             UserDefaults.standard.set(userId, forKey: "userId")
+            UserDefaults.standard.set(dinnerTime, forKey: "dinnerTime")
+            NotificationManager.shared.requestPermissionAndSchedule(dinnerTime: dinnerTime)
         } catch {
             errorMessage = error.localizedDescription
         }
