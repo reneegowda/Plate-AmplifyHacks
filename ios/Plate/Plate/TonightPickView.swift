@@ -71,7 +71,11 @@ struct TonightPickView: View {
                 
                 Spacer()
                 
-                Button(action: {}) {
+                Button(action: {
+                    if let url = URL(string: recommendation.mapsUrl) {
+                        UIApplication.shared.open(url)
+                    }
+                }) {
                     Text("take me there →")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(.white)

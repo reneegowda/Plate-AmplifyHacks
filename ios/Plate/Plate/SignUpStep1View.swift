@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SignUpStep1View: View {
-    @Binding var currentScreen: Int
+    @Binding var currentScreen: Int 
     @EnvironmentObject var viewModel: SignUpViewModel
     
     var body: some View {

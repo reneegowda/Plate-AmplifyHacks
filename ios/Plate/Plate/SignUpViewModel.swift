@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 @MainActor
 final class SignUpViewModel: ObservableObject {
@@ -16,7 +17,7 @@ final class SignUpViewModel: ObservableObject {
 
     func signup() async {
         guard let ageInt = Int(age), let budgetInt = Int(budget) else {
-            errorMessage = "Age and budget must be valid numbers."
+            errorMessage = "Age and budget must be valid numbers." 
             return
         }
 

@@ -62,7 +62,7 @@ final class NetworkManager {
                 dish: "Truffle Mushroom Risotto",
                 keywords: ["cozy", "vegetarian-friendly", "date night"],
                 address: "123 Maple St, San Francisco, CA 94103",
-                mapsUrl: "https://maps.apple.com/?q=The+Golden+Spoon",
+                mapsUrl: "https://maps.apple.com/place?place-id=IC80541FA4F15BFBB",
                 price: "$18",
                 closingTime: "10 PM"
             )
